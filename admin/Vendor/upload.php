@@ -732,12 +732,13 @@ class upload {
 					if (function_exists('mime_content_type')) {
 						$this->file_src_mime = mime_content_type($this->file_src_pathname);
 						$this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MIME type detected as ' . $this->file_src_mime . ' by mime_content_type()<br />';
-						if (preg_match("/^([\.-\w]+)\/([\.-\w]+)(.*)$/i", $this->file_src_mime)) {
-							$this->file_src_mime = preg_replace("/^([\.-\w]+)\/([\.-\w]+)(.*)$/i", '$1/$2', $this->file_src_mime);
-							$this->log .= '-&nbsp;MIME validated as ' . $this->file_src_mime . '<br />';
-						} else {
-							$this->file_src_mime = null;
-						}
+						//Comment trÃ¡nh bá»‹ lá»—i khi upload áº£nh á»Ÿ quáº£n lÃ½ Post
+						// if (preg_match("/^([\.-\w]+)\/([\.-\w]+)(.*)$/i", $this->file_src_mime)) {
+						// 	$this->file_src_mime = preg_replace("/^([\.-\w]+)\/([\.-\w]+)(.*)$/i", '$1/$2', $this->file_src_mime);
+						// 	$this->log .= '-&nbsp;MIME validated as ' . $this->file_src_mime . '<br />';
+						// } else {
+						// 	$this->file_src_mime = null;
+						// }
 					} else {
 						$this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;mime_content_type() is not available<br />';
 					}
@@ -1163,8 +1164,8 @@ class upload {
 				$this->log .= '- file name body prepend : ' . $this->file_name_body_pre . '<br />';
 			}
 			if ($this->file_safe_name) { 
-				$this->file_dst_name_body = strtr($this->file_dst_name_body, '????ŸÀÁÂ?ÄÅÇÈÉÊË?ÍÎÏÑ?ÓÔ?ÖØÙÚÛÜ?àáâ?äåçèéêë?íîïñ?óô?öøùúûü?ÿ', 'SZszYAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy');
-				$this->file_dst_name_body = strtr($this->file_dst_name_body, array('?' => 'TH', '?' => 'th', '?' => 'DH', '?' => 'dh', 'ß' => 'ss', 'Œ' => 'OE', 'œ' => 'oe', 'Æ' => 'AE', 'æ' => 'ae', 'µ' => 'u'));
+				$this->file_dst_name_body = strtr($this->file_dst_name_body, '????ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½', 'SZszYAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy');
+				$this->file_dst_name_body = strtr($this->file_dst_name_body, array('?' => 'TH', '?' => 'th', '?' => 'DH', '?' => 'dh', 'ï¿½' => 'ss', 'ï¿½' => 'OE', 'ï¿½' => 'oe', 'ï¿½' => 'AE', 'ï¿½' => 'ae', 'ï¿½' => 'u'));
 				$this->file_dst_name_body = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), $this->file_dst_name_body);
 				$this->log .= '- file name safe format<br />';
 			}
