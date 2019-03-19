@@ -163,6 +163,7 @@ a.remove-link:hover {
     cursor: pointer;
     display: block;
     text-decoration: none;
+    text-align: left !important;
 }
 #sidebar #main-nav li a:hover {
     color: #000;
@@ -563,9 +564,9 @@ body#login {
 }
 #login-wrapper #login-content {
     text-align: left;
-    background: url(../images/loginbox_bg.png) no-repeat;
+    background: url(../images/loginbox_bg_ok.png) no-repeat;
     margin: 0 auto;
-    font-size: 12px;
+    font-size: 14px;
     height: 421px;
     line-height: 12px;
     padding-top: 60px;

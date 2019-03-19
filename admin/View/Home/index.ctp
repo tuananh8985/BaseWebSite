@@ -11,7 +11,8 @@
             
             <div class="notification attention png_bg"> </div>
             <div class="module_content">
-                <article class="stats_graph"> <img src="http://chart.apis.google.com/chart?chxr=0,0,3000&chxt=y&chs=520x140&cht=lc&chco=76A4FB,80C65A&chd=s:Tdjpsvyvttmiihgmnrst,OTbdcfhhggcTUTTUadfk&chls=2|2&chma=40,20,20,30" width="520" height="140" alt="" /> </article>
+                <!-- <article class="stats_graph"> <img src="http://chart.apis.google.com/chart?chxr=0,0,3000&chxt=y&chs=520x140&cht=lc&chco=76A4FB,80C65A&chd=s:Tdjpsvyvttmiihgmnrst,OTbdcfhhggcTUTTUadfk&chls=2|2&chma=40,20,20,30" width="520" height="140" alt="" /> </article> -->
+                <article class="stats_graph"> <img src="" width="520" height="140" alt="" /> </article>
                 <article class="stats_overview">
                     <div class="overview_today">
                         <p class="overview_day">Today</p>

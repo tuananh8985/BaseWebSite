@@ -65,7 +65,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'root',
 		'password' => '',
-		'database' => 'dalongphat',
+		'database' => 'database',
 		'prefix' => '',
 		'encoding' => 'utf8',
 	);
