@@ -30,11 +30,13 @@ App::uses('Model', 'Model');
  *
  * @package       app.Model
  */
-class AppModel extends Model {
+class AppModel extends Model
+{
 
     public $locale = 'vie';
 
-    public function setLanguage($locale) {
+    public function setLanguage($locale)
+    {
         $this->locale = $locale;
     }
 

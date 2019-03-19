@@ -7,17 +7,19 @@ App::import('Vendor', 'upload');
  * @author : Trung Tong
  * @since Oct 19, 2012
  */
-class ContactController extends AppController {
+class ContactController extends AppController
+{
 
     public $name = 'Contact';
     public $uses = array('Settings', 'Contact');
     public $components = array('Email');
 
-    public function index() {
-		$this->set('title_for_layout','Liên hệ');//pr($typeName);die;
+    public function index()
+    {
+        $this->set('title_for_layout', 'Liên hệ'); //pr($typeName);die;
         $x = $this->Settings->read(null, 1);
         if ($this->request->is('post')) {
-            
+
             $name = $_POST['name'];
             $mobile = $_POST['mobile'];
             $email = $_POST['email'];
@@ -35,17 +37,16 @@ class ContactController extends AppController {
             $this->set('title', $title);
             $this->set('content1', $noidung);
             $this->Contact->save($this->data);
-		
-			
-			 if ($this->Email->send()) {
+
+            if ($this->Email->send()) {
                 $this->Session->setFlash(__('Thêm mới danh mục thành công', true));
                 echo '<script language="javascript"> alert("Gửi mail thành công"); location.href="' . DOMAIN . '";</script>';
-            }
-            else
+            } else {
                 $this->Session->setFlash(__('Thêm mơi danh mục thất bại. Vui long thử lại', true));
+            }
+
             echo '<script language="javascript"> alert("gửi mail không thành công"); location.href="' . DOMAIN . '";</script>';
-			
-            
+
         }
     }
 }

@@ -1,14 +1,15 @@
 <?php
 
-class Duhoc extends AppModel {
+class Duhoc extends AppModel
+{
 
     public $name = 'Duhoc';
     public $displayField = 'name';
-	//public $actsAs = array('Translate' => array('name' => 'nameTranslation', 'shortdes' => 'shortdesTranslation', 'content' => 'contentTranslation'), 'Sluggable' => array('label' => 'name'));
+    //public $actsAs = array('Translate' => array('name' => 'nameTranslation', 'shortdes' => 'shortdesTranslation', 'content' => 'contentTranslation'), 'Sluggable' => array('label' => 'name'));
     public $validate = array(
         'id' => array(
             'notempty' => array(
-                'rule' => array('notempty')
+                'rule' => array('notempty'),
             ),
         ),
         'name' => array(
@@ -16,7 +17,7 @@ class Duhoc extends AppModel {
                 'rule' => array('notempty'),
                 'message' => 'Xin vui lòng điền thông tin',
                 'allowEmpty' => false,
-                'required' => false
+                'required' => false,
             ),
         ),
         'cat_idi' => array(
@@ -24,17 +25,15 @@ class Duhoc extends AppModel {
                 'rule' => array('notempty'),
                 'message' => 'Xin vui lòng điền thông tin',
                 'allowEmpty' => false,
-                'required' => false
+                'required' => false,
             ),
         ),
     );
     public $belongsTo = array(
         'Danhmucduhoc' => array(
             'className' => 'Danhmucduhoc',
-            'foreignKey' => 'cat_id'
-        )
+            'foreignKey' => 'cat_id',
+        ),
     );
 
 }
-
-?>

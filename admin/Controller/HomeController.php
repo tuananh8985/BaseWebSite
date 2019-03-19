@@ -1,11 +1,13 @@
 <?php
 
-class HomeController extends AppController {
+class HomeController extends AppController
+{
 
     public $name = 'Home';
     public $uses = array();
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = 'admin';
         if (!$this->Session->read("id") || !$this->Session->read("name")) {
@@ -13,7 +15,8 @@ class HomeController extends AppController {
         }
     }
 
-    public function index() {
+    public function index()
+    {
     }
 
 }

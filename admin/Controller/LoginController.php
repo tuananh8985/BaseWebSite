@@ -1,25 +1,29 @@
 <?php
 
-class LoginController extends AppController {
+class LoginController extends AppController
+{
 
     public $name = 'Login';
-    public  $helpers = array('Session', 'Form', 'Html');
+    public $helpers = array('Session', 'Form', 'Html');
     public $uses = array('Administrator');
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = 'login';
     }
 
-    public function index() {
-        
+    public function index()
+    {
+
     }
 
     /*
      * Check Login
      * @create : 09-10-2012
      */
-    function login() {
+    public function login()
+    {
         $data['Administrator'] = $this->data['Administrator'];
         if (empty($data['Administrator']['name'])) {
             $this->Session->setFlash(__('Xin vui lòng nhập tên đăng nhập', true));
@@ -40,22 +44,25 @@ class LoginController extends AppController {
                 }
             } else {
                 $this->Session->setFlash(__('Xin vui lòng đăng nhập lại', true));
-                    $this->redirect('/');
+                $this->redirect('/');
             }
         }
     }
 
     //lay lai password
-    function password() {
+    public function password()
+    {
         $this->layout = 'password';
     }
 
-    function check_pass() {
-        
+    public function check_pass()
+    {
+
     }
 
     //logout ra khoi he thong
-    function logout() {
+    public function logout()
+    {
         $this->Session->delete('id');
         $this->Session->delete('name');
         $this->redirect(array('action' => 'index'));

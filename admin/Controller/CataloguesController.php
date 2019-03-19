@@ -5,12 +5,14 @@
  * @author : Trung Tong
  * @since 12-10-2012
  */
-class CataloguesController extends AppController {
+class CataloguesController extends AppController
+{
 
     public $name = 'Catalogues';
     public $uses = array();
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = 'admin';
         if (!$this->Session->read("id") || !$this->Session->read("name")) {
@@ -23,13 +25,14 @@ class CataloguesController extends AppController {
      * @author : Trung Tong
      * @param $id : id in table catproduct
      */
-    public function index($id = null) {
+    public function index($id = null)
+    {
         $Catalogue = $this->Catalogue->find('all', array(
             'conditions' => array(
-                'Catalogue.parent_id' => $id
+                'Catalogue.parent_id' => $id,
             ),
-            'order' => array('Catalogue. pos ASC', 'Catalogue.modified DESC')
-            ));
+            'order' => array('Catalogue. pos ASC', 'Catalogue.modified DESC'),
+        ));
         $this->set('Catalogue', $Catalogue);
 
         // List for combo box
@@ -45,8 +48,9 @@ class CataloguesController extends AppController {
      * @author : Trung Tong
      * @param $id : id in table catproduct
      */
-    function add($id = null) {
-        if (!empty($this->request->data)) {            
+    public function add($id = null)
+    {
+        if (!empty($this->request->data)) {
 
             $this->Catalogue->create();
             $data = $this->request->data;
@@ -67,7 +71,8 @@ class CataloguesController extends AppController {
      * @author : Trung Tong
      * @param $id : id in table catproduct
      */
-    function edit($id = null) {
+    public function edit($id = null)
+    {
         $this->Catalogue->setLanguage('vie', 'eng');
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Không tồn tại ', true));
@@ -101,7 +106,8 @@ class CataloguesController extends AppController {
      * @author : Trung Tong
      * @param $id : id in table catproduct
      */
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (empty($id)) {
             $this->Session->setFlash(__('Không tồn tại danh mục này', true));
             $this->redirect($this->referer());
@@ -116,57 +122,55 @@ class CataloguesController extends AppController {
      * Change position
      * @author Trung -Tong
      */
-	  function changepos() {
+    public function changepos()
+    {
 
         $vitri = $_REQUEST['order'];
 
         $display = $_REQUEST['display'];
 
-
         foreach ($vitri as $k => $v) {
 
-			if($v == "") {
+            if ($v == "") {
 
-				$v = null;
+                $v = null;
 
-			}
+            }
 
             $this->Catalogue->updateAll(
 
                 array(
 
-                'Catalogue.pos' => $v,
+                    'Catalogue.pos' => $v,
 
-                'Catalogue.display' => $display[$k],
-             
+                    'Catalogue.display' => $display[$k],
 
                 ), array(
 
-                'Catalogue.id' => $k)
+                    'Catalogue.id' => $k)
 
             );
 
         }
 
-        if($this->Session->check('pageproduct')) {
+        if ($this->Session->check('pageproduct')) {
 
-			$this->redirect($this->Session->read('pageproduct'));
+            $this->redirect($this->Session->read('pageproduct'));
 
-			exit;
+            exit;
 
-		} else {
+        } else {
 
-			$this->redirect('/catalogues');
+            $this->redirect('/catalogues');
 
-			exit;
+            exit;
 
-		}
+        }
 
     }
 
-
-
-    function changepos11() {
+    public function changepos11()
+    {
         $vitri = $_REQUEST['order'];
         // Update order
         foreach ($vitri as $k => $v) {
@@ -176,14 +180,16 @@ class CataloguesController extends AppController {
     }
 
     //close danh muc
-    function close($id = null) {
+    public function close($id = null)
+    {
         $this->Catalogue->id = $id;
         $this->Catalogue->saveField('status', 0);
         $this->redirect($this->referer());
     }
 
     // active danh muc
-    function active($id = null) {
+    public function active($id = null)
+    {
         $this->Catalogue->id = $id;
         $this->Catalogue->saveField('status', 1);
         $this->redirect($this->referer());

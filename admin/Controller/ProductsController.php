@@ -1,9 +1,7 @@
 <?php
 
 App::import('Vendor', 'upload');
-
 App::import('Vendor', 'ckeditor');
-
 App::import('Vendor', 'ckfinder');
 
 /**

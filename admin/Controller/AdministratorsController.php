@@ -1,11 +1,13 @@
 <?php
 
-class AdministratorsController extends AppController {
+class AdministratorsController extends AppController
+{
 
     public $name = 'Administrators';
     public $uses = array('Administrator');
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = 'admin';
         if (!$this->Session->read("id") || !$this->Session->read("name")) {
@@ -13,11 +15,13 @@ class AdministratorsController extends AppController {
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $this->set('users', $this->Administrator->find('all'));
     }
 
-    public function edit_pass($id = null) {
+    public function edit_pass($id = null)
+    {
         if (!$id && empty($this->data)) {
             $this->Session->setFlash(__('Không tồn tại ', true));
             $this->redirect(array('action' => 'index'));
@@ -27,7 +31,8 @@ class AdministratorsController extends AppController {
         }
     }
 
-    public function check_pass() {
+    public function check_pass()
+    {
         if (!empty($this->data)) {
             $data['Administrator'] = $this->data['Administrator'];
             if ($data['Administrator']['password'] == '' || $data['Administrator']['pass2'] == '') {
@@ -48,20 +53,25 @@ class AdministratorsController extends AppController {
             }
         }
     }
-    public function add() {
+    public function add()
+    {
         if (!empty($this->data)) {
             $data = $this->data;
             $data['Administrator']['password'] = md5(trim($this->data['Administrator']['password']));
             $this->Administrator->create();
-            if ($this->Administrator->save($data['Administrator']))
+            if ($this->Administrator->save($data['Administrator'])) {
                 $this->redirect(array('action' => 'index'));
-            
+            }
+
         }
     }
 
-    public function delete($id = null) {
-        if (!empty($id))
+    public function delete($id = null)
+    {
+        if (!empty($id)) {
             $this->Administrator->delete($id);
+        }
+
         $this->redirect(array('action' => 'index'));
     }
 

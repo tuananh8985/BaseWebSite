@@ -177,9 +177,9 @@ class PostsController extends AppController
                         $img = $handle->file_dst_name;
                     }
                     // upload ảnh =>xóa đi ảnh cũ
-                    
+
                     $external_link = WWW_ROOT . '/img/post/' . $_REQUEST['oldimg'];
-                    if($_REQUEST['oldimg'] && @getimagesize($external_link)){
+                    if ($_REQUEST['oldimg'] && @getimagesize($external_link)) {
                         unlink(WWW_ROOT . '/img/post/' . $_REQUEST['oldimg']);
                     }
                 }
@@ -222,11 +222,11 @@ class PostsController extends AppController
         if (empty($id)) {
             $this->Session->setFlash(__('Không tồn tại bài viết này', true));
             //$this->redirect(array('action'=>'index'));
-        }else{
+        } else {
             $post = $this->Post->read(null, $id);
             // Khi xóa bài viết=>sẽ xóa cả hình ảnh trong thư mục
             $external_link = WWW_ROOT . '/img/post/' . $post['Post']['images'];
-            if($post['Post']['images'] && @getimagesize($external_link)){
+            if ($post['Post']['images'] && @getimagesize($external_link)) {
                 unlink(WWW_ROOT . '/img/post/' . $post['Post']['images']);
             }
         }

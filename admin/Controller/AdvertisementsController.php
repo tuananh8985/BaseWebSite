@@ -7,12 +7,14 @@ App::import('Vendor', 'upload');
  * @author : Trung Tong
  * @since Oct 15, 2012
  */
-class AdvertisementsController extends AppController {
-    
+class AdvertisementsController extends AppController
+{
+
     public $name = 'Advertisements';
     public $uses = array();
-    
-    public function beforeFilter() {
+
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = 'admin';
         if (!$this->Session->read("id") || !$this->Session->read("name")) {
@@ -23,18 +25,20 @@ class AdvertisementsController extends AppController {
     /**
      * Danh sach quang cao
      */
-    public function index() {
+    public function index()
+    {
         $advs = $this->Advertisement->find('all', array(
-            'order' => 'Advertisement.pos ASC'
+            'order' => 'Advertisement.pos ASC',
         ));
         $this->set('advs', $advs);
     }
-    
+
     /**
      * Thêm quang cao
      * @author Trung Tong
      */
-    function add() {
+    public function add()
+    {
         if (!empty($this->request->data)) {
             $this->Advertisement->create();
             $data['Advertisement'] = $this->data['Advertisement'];
@@ -47,9 +51,9 @@ class AdvertisementsController extends AppController {
             if ($handle->uploaded) {
 
                 // Neu resize
-//                $handle->image_resize          = true;
-//                $handle->image_ratio_y        = true;
-//                $handle->image_x                 = 790;
+                //                $handle->image_resize          = true;
+                //                $handle->image_ratio_y        = true;
+                //                $handle->image_x                 = 790;
 
                 $filename = date('YmdHis') . md5(rand(10000, 99999));
                 $handle->file_new_name_body = $filename;
@@ -73,7 +77,8 @@ class AdvertisementsController extends AppController {
      * Edit quang cao
      * @author Trung Tong
      */
-    function edit($id = null) {
+    public function edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Không tồn tại ', true));
             $this->redirect(array('action' => 'index'));
@@ -115,26 +120,28 @@ class AdvertisementsController extends AppController {
      * Change position
      * @author Trung -Tong
      */
-    function changepos() {
+    public function changepos()
+    {
         $vitri = $_REQUEST['order'];
 
         // Update order
         foreach ($vitri as $k => $v) {
             $this->Advertisement->updateAll(
                 array(
-                'Advertisement.pos' => $v
+                    'Advertisement.pos' => $v,
                 ), array(
-                'Advertisement.id' => $k)
+                    'Advertisement.id' => $k)
             );
         }
         $this->redirect(array('action' => 'index'));
     }
-    
+
     // Xoa quang cao
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (empty($id)) {
             $this->Session->setFlash(__('Không tồn tại bài viết này', true));
-            $this->redirect(array('action'=>'index'));
+            $this->redirect(array('action' => 'index'));
         }
         if ($this->Advertisement->delete($id)) {
             $this->Session->setFlash(__('Xóa bài viết thành công', true));
@@ -143,16 +150,18 @@ class AdvertisementsController extends AppController {
         $this->Session->setFlash(__('Bài viết không xóa được', true));
         $this->redirect(array('action' => 'index'));
     }
-    
+
     //close quang cao
-    function close($id = null) {
+    public function close($id = null)
+    {
         $this->Advertisement->id = $id;
         $this->Advertisement->saveField('status', 0);
         $this->redirect(array('action' => 'index'));
     }
 
     // active quang cao
-    function active($id = null) {
+    public function active($id = null)
+    {
         $this->Advertisement->id = $id;
         $this->Advertisement->saveField('status', 1);
         $this->redirect(array('action' => 'index'));

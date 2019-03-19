@@ -1,20 +1,21 @@
 <?php
 
-class Tintuc extends AppModel {
+class Tintuc extends AppModel
+{
 
-    var $name = 'Tintuc';
-    var $displayField = 'name';
-    
+    public $name = 'Tintuc';
+    public $displayField = 'name';
+
     public $actsAs = array('Translate' => array('name' => 'nameTranslation', 'shortdes' => 'shortdesTranslation', 'content' => 'contentTranslation'));
-    var $validate = array(
+    public $validate = array(
         'id' => array(
             'notempty' => array(
                 'rule' => array('notempty'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'title' => array(
@@ -23,8 +24,8 @@ class Tintuc extends AppModel {
                 'message' => 'Xin vui lòng điền thông tin',
                 'allowEmpty' => false,
                 'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'catNew_id' => array(
@@ -33,19 +34,16 @@ class Tintuc extends AppModel {
                 'message' => 'Xin vui lòng điền thông tin',
                 'allowEmpty' => false,
                 'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
     );
-    var $belongsTo = array(
+    public $belongsTo = array(
         'Danhmuc' => array(
             'className' => 'Danhmuc',
-            'foreignKey' => 'cat_id'
-        )
+            'foreignKey' => 'cat_id',
+        ),
     );
-    
 
 }
-
-?>

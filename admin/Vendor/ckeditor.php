@@ -1,6 +1,7 @@
 <?php
 
-class CKEditor {
+class CKEditor
+{
 
     const version = '3.4.2';
     const timestamp = 'AA4E4NT';
@@ -14,22 +15,24 @@ class CKEditor {
     private $events = array();
     private $globalEvents = array();
 
-    function __construct($basePath = null) {
+    public function __construct($basePath = null)
+    {
         if (!empty($basePath)) {
             $this->basePath = DOMAINAD . "js/ckeditor";
         }
     }
 
-    public function editor($name, $value = "", $option, $config = array(), $events = array()) {
+    public function editor($name, $value = "", $option, $config = array(), $events = array())
+    {
         $attr = "";
         foreach ($this->textareaAttributes as $key => $val) {
-            $attr.= " " . $key . '="' . str_replace('"', '&quot;', $val) . '"';
+            $attr .= " " . $key . '="' . str_replace('"', '&quot;', $val) . '"';
         }
         $out = "<textarea name=\"" . $name . "\"" . $attr . ">" . htmlspecialchars($value) . "</textarea>\n";
         if (!$this->initialized) {
             $out .= $this->init();
         }
-        
+
         switch ($option) {
             case 'extra':
                 $config['toolbar'] = array(
@@ -42,11 +45,11 @@ class CKEditor {
                     array('Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript'),
                     array('NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'),
                     array('JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
-                    array('Link', 'Anchor'), 
+                    array('Link', 'Anchor'),
                     array('Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'),
                     array('Styles', 'Format', 'Font', 'FontSize'),
                     array('TextColor', 'BGColor'),
-                    array('ShowBlocks', 'Maximize')
+                    array('ShowBlocks', 'Maximize'),
                 );
                 break;
 
@@ -56,19 +59,20 @@ class CKEditor {
                     array('NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'),
                     array('JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
                     array('Format', 'Font', 'FontSize'),
-                    array('Link', 'Unlink', '-', 'SelectAll', 'RemoveFormat')
+                    array('Link', 'Unlink', '-', 'SelectAll', 'RemoveFormat'),
                 );
                 break;
-            default :
+            default:
                 break;
         }
         $_config = $this->configSettings($config, $events);
-        
+
         $js = $this->returnGlobalEvents();
-        if (!empty($_config))
+        if (!empty($_config)) {
             $js .= "CKEDITOR.replace('" . $name . "', " . $this->jsEncode($_config) . ");";
-        else
+        } else {
             $js .= "CKEDITOR.replace('" . $name . "');";
+        }
 
         $out .= $this->script($js);
 
@@ -80,7 +84,8 @@ class CKEditor {
         return $out;
     }
 
-    public function replace($id, $config = array(), $events = array()) {
+    public function replace($id, $config = array(), $events = array())
+    {
         $out = "";
         if (!$this->initialized) {
             $out .= $this->init();
@@ -104,7 +109,8 @@ class CKEditor {
         return $out;
     }
 
-    public function replaceAll($className = null) {
+    public function replaceAll($className = null)
+    {
         $out = "";
         if (!$this->initialized) {
             $out .= $this->init();
@@ -141,7 +147,8 @@ class CKEditor {
         return $out;
     }
 
-    public function addEventHandler($event, $javascriptCode) {
+    public function addEventHandler($event, $javascriptCode)
+    {
         if (!isset($this->events[$event])) {
             $this->events[$event] = array();
         }
@@ -151,7 +158,8 @@ class CKEditor {
         }
     }
 
-    public function clearEventHandlers($event = null) {
+    public function clearEventHandlers($event = null)
+    {
         if (!empty($event)) {
             $this->events[$event] = array();
         } else {
@@ -159,7 +167,8 @@ class CKEditor {
         }
     }
 
-    public function addGlobalEventHandler($event, $javascriptCode) {
+    public function addGlobalEventHandler($event, $javascriptCode)
+    {
         if (!isset($this->globalEvents[$event])) {
             $this->globalEvents[$event] = array();
         }
@@ -169,7 +178,8 @@ class CKEditor {
         }
     }
 
-    public function clearGlobalEventHandlers($event = null) {
+    public function clearGlobalEventHandlers($event = null)
+    {
         if (!empty($event)) {
             $this->globalEvents[$event] = array();
         } else {
@@ -177,7 +187,8 @@ class CKEditor {
         }
     }
 
-    private function script($js) {
+    private function script($js)
+    {
         $out = "<script type=\"text/javascript\">";
         $out .= "//<![CDATA[\n";
         $out .= $js;
@@ -187,7 +198,8 @@ class CKEditor {
         return $out;
     }
 
-    private function configSettings($config = array(), $events = array()) {
+    private function configSettings($config = array(), $events = array())
+    {
         $_config = $this->config;
         $_events = $this->events;
 
@@ -225,7 +237,8 @@ class CKEditor {
         return $_config;
     }
 
-    private function returnGlobalEvents() {
+    private function returnGlobalEvents()
+    {
         static $returnedEvents;
         $out = "";
 
@@ -251,7 +264,8 @@ class CKEditor {
         return $out;
     }
 
-    private function init() {
+    private function init()
+    {
         static $initComplete;
         $out = "";
 
@@ -270,7 +284,6 @@ class CKEditor {
         if (!empty($this->timestamp) && $this->timestamp != "%" . "TIMESTAMP%") {
             $args = '?t=' . $this->timestamp;
         }
-
 
         if (strpos($ckeditorPath, '..') !== 0) {
             $out .= $this->script("window.CKEDITOR_BASEPATH='" . $ckeditorPath . "';");
@@ -291,11 +304,11 @@ class CKEditor {
         return $out;
     }
 
-    private function ckeditorPath() {
+    private function ckeditorPath()
+    {
         if (!empty($this->basePath)) {
             return $this->basePath;
         }
-
 
         if (isset($_SERVER['SCRIPT_FILENAME'])) {
             $realPath = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -303,7 +316,6 @@ class CKEditor {
 
             $realPath = realpath('./');
         }
-
 
         $selfPath = dirname($_SERVER['PHP_SELF']);
         $file = str_replace("\\", "/", __FILE__);
@@ -319,7 +331,8 @@ class CKEditor {
         return $ckeditorUrl;
     }
 
-    private function jsEncode($val) {
+    private function jsEncode($val)
+    {
         if (is_null($val)) {
             return 'null';
         }
@@ -335,17 +348,12 @@ class CKEditor {
                 $val = str_replace(",", ".", strval($val));
             }
 
-
             if (strpos($val, '@@') === 0) {
                 return substr($val, 2);
             } else {
 
-
-
-
-
                 static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'),
-                array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
+                    array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
 
                 $val = str_replace($jsonReplaces[0], $jsonReplaces[1], $val);
 
@@ -361,16 +369,18 @@ class CKEditor {
         }
         $result = array();
         if ($isList) {
-            foreach ($val as $v)
+            foreach ($val as $v) {
                 $result[] = $this->jsEncode($v);
+            }
+
             return '[ ' . join(', ', $result) . ' ]';
         } else {
-            foreach ($val as $k => $v)
+            foreach ($val as $k => $v) {
                 $result[] = $this->jsEncode($k) . ': ' . $this->jsEncode($v);
+            }
+
             return '{ ' . join(', ', $result) . ' }';
         }
     }
 
 }
-
-?>

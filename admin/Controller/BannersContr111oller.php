@@ -7,12 +7,14 @@ App::import('Vendor', 'upload');
  * @author : Trung Tong
  * @since Oct 15, 2012
  */
-class BannersController extends AppController {
+class BannersController extends AppController
+{
 
     public $name = 'Banners';
     public $uses = array();
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = 'admin';
         if (!$this->Session->read("id") || !$this->Session->read("name")) {
@@ -24,7 +26,8 @@ class BannersController extends AppController {
      * Danh sach banner
      * Co the co nhieu banner va se hien thi banner nao duoc chon
      */
-    public function index() {
+    public function index()
+    {
         $banner = $this->Banner->find('all');
         $this->set('banner', $banner);
     }
@@ -33,7 +36,8 @@ class BannersController extends AppController {
      * Thêm banner
      * @author Trung Tong
      */
-    function add() {
+    public function add()
+    {
         if (!empty($this->request->data)) {
             $this->Banner->create();
             $data['Banner'] = $this->data['Banner'];
@@ -46,9 +50,9 @@ class BannersController extends AppController {
             if ($handle->uploaded) {
 
                 // Neu resize
-//                $handle->image_resize          = true;
-//                $handle->image_ratio_y        = true;
-//                $handle->image_x                 = 790;
+                //                $handle->image_resize          = true;
+                //                $handle->image_ratio_y        = true;
+                //                $handle->image_x                 = 790;
 
                 $filename = date('YmdHis') . md5(rand(10000, 99999));
                 $handle->file_new_name_body = $filename;
@@ -72,7 +76,8 @@ class BannersController extends AppController {
      * Edit banner
      * @author Trung Tong
      */
-    function edit($id = null) {
+    public function edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Không tồn tại ', true));
             $this->redirect(array('action' => 'index'));
@@ -114,7 +119,8 @@ class BannersController extends AppController {
      * Select banner
      * update status = 1
      */
-    public function selectBanner() {
+    public function selectBanner()
+    {
         $chon = $_REQUEST['chon'];
 
         /**
@@ -128,9 +134,10 @@ class BannersController extends AppController {
         $this->Banner->updateAll(array('Banner.status' => 1), array('Banner.id' => $chon));
         $this->redirect("/banners");
     }
-    
+
     // Xoa banner
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (empty($id)) {
             $this->Session->setFlash(__('Không tồn tại bài viết này', true));
             //$this->redirect(array('action'=>'index'));

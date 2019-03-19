@@ -1,25 +1,26 @@
 <?php
 
-class Catproduct extends AppModel {
+class Catproduct extends AppModel
+{
 
-    var $name = 'Catproduct';
-    var $displayField = 'name';
-     public $actsAs = array('Tree','Translate' => array('name' => 'nameTranslation', 'shortdes' => 'shortdesTranslation', 'content' => 'contentTranslation'));
-   var $belongsTo = array(
+    public $name = 'Catproduct';
+    public $displayField = 'name';
+    public $actsAs = array('Tree', 'Translate' => array('name' => 'nameTranslation', 'shortdes' => 'shortdesTranslation', 'content' => 'contentTranslation'));
+    public $belongsTo = array(
         'ParentCat' => array(
             'className' => 'Catproduct',
-            'foreignKey' => 'parent_id'
-        )
+            'foreignKey' => 'parent_id',
+        ),
     );
-    var $validate = array(
+    public $validate = array(
         'id' => array(
             'notempty' => array(
                 'rule' => array('notempty'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'name' => array(
@@ -28,14 +29,13 @@ class Catproduct extends AppModel {
                 'message' => 'Xin vui lòng điền thông tin',
                 'allowEmpty' => false,
                 'required' => true,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
     );
-    var $hasMany = array(
-        'Product' =>
-        array('className' => 'Product',
+    public $hasMany = array(
+        'Product' => array('className' => 'Product',
             'conditions' => array('Product.status' => 1),
             'order' => '',
             'limit' => '',
@@ -45,10 +45,8 @@ class Catproduct extends AppModel {
             'finderQuery' => '',
             'fields' => '',
             'offset' => '',
-            'counterQuery' => ''
-        )
+            'counterQuery' => '',
+        ),
     );
 
 }
-
-?>

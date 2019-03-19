@@ -9,12 +9,14 @@ App::import('Vendor', 'ckfinder');
  * @author : Trung Tong
  * @since 09-10-2012
  */
-class TintucsController extends AppController {
+class TintucsController extends AppController
+{
 
     public $name = 'Tintuc';
     public $uses = array();
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->layout = 'admin';
         if (!$this->Session->read("id") || !$this->Session->read("name")) {
@@ -26,10 +28,11 @@ class TintucsController extends AppController {
      * Danh sách sản phẩm
      * @author Trung Tong
      */
-    function index() {
+    public function index()
+    {
         $this->paginate = array(
             'order' => 'Tintuc.pos ASC, Tintuc.modified DESC, Tintuc.id DESC',
-            'limit' => '10'
+            'limit' => '10',
         );
         $listNews = $this->paginate('Tintuc');
         $this->set('listNewss', $listNews);
@@ -43,7 +46,7 @@ class TintucsController extends AppController {
             $startPage = 1;
         }
         $this->set('startPage', $startPage);
-        
+
         // Lưu đường dẫn để quay lại nếu update, edit, dellete
         $urlnew = DOMAINAD . $this->request->url;
         $this->Session->write('urlnew', $urlnew);
@@ -63,23 +66,24 @@ class TintucsController extends AppController {
      * Change position
      * @author Trung -Tong
      */
-    function changepos() {
+    public function changepos()
+    {
         $vitri = $_REQUEST['order'];
         $sphome = $_REQUEST['sphome'];
         $sphot = $_REQUEST['sphot'];
 
         // Update order
         foreach ($vitri as $k => $v) {
-			if($v == "") {
-				$v = null;
-			}
+            if ($v == "") {
+                $v = null;
+            }
             $this->Tintuc->updateAll(
                 array(
-                'Tintuc.pos' => $v,
-                'Tintuc.new' => $sphome[$k],
-                'Tintuc.hot' => $sphot[$k]
+                    'Tintuc.pos' => $v,
+                    'Tintuc.new' => $sphome[$k],
+                    'Tintuc.hot' => $sphot[$k],
                 ), array(
-                'Tintuc.id' => $k)
+                    'Tintuc.id' => $k)
             );
         }
         if ($this->Session->check('pagenew')) {
@@ -93,44 +97,45 @@ class TintucsController extends AppController {
      * Xu ly cac chuc nang lua chon theo so nhieu
      * @author Trung -Tong
      */
-    function process() {
+    public function process()
+    {
         $process = $_REQUEST['process'];
         $chon = $_REQUEST['chon'];
-		if (count($chon) == 0 || $process < 1) {
-			if($this->Session->check('pagenew')) {
-				$this->redirect($this->Session->read('pagenew'));
-				exit;
-			} else {
-				$this->redirect('/tintuc');
-				exit;
-			}            
+        if (count($chon) == 0 || $process < 1) {
+            if ($this->Session->check('pagenew')) {
+                $this->redirect($this->Session->read('pagenew'));
+                exit;
+            } else {
+                $this->redirect('/tintuc');
+                exit;
+            }
         }
         switch ($process) {
-            case '1' :
+            case '1':
                 // Update active
                 foreach ($chon as $k => $v) {
                     $this->Tintuc->updateAll(
                         array(
-                        'Tintuc.status' => 1
+                            'Tintuc.status' => 1,
                         ), array(
-                        'Tintuc.id' => $k)
+                            'Tintuc.id' => $k)
                     );
                 }
                 break;
 
-            case '2' :
+            case '2':
                 // Update deactive
                 foreach ($chon as $k => $v) {
                     $this->Tintuc->updateAll(
                         array(
-                        'Tintuc.status' => 0
+                            'Tintuc.status' => 0,
                         ), array(
-                        'Tintuc.id' => $k)
+                            'Tintuc.id' => $k)
                     );
                 }
                 break;
 
-            case '3' :
+            case '3':
                 // delete many rows
                 $groupId = "";
                 foreach ($chon as $k => $v) {
@@ -138,7 +143,7 @@ class TintucsController extends AppController {
                 }
                 $groupId = substr($groupId, 1);
                 $conditions = array(
-                    'Tintuc.id IN (' . $groupId . ')'
+                    'Tintuc.id IN (' . $groupId . ')',
                 );
                 $this->Tintuc->deleteAll($conditions);
                 break;
@@ -153,9 +158,10 @@ class TintucsController extends AppController {
     /**
      * Thêm sản phẩm
      * @author Trung Tong
-//     */
+    //     */
 
-    function add() {
+    public function add()
+    {
         if (!empty($this->data)) {
             $this->Tintuc->create();
             $data = $this->request->data;
@@ -164,10 +170,9 @@ class TintucsController extends AppController {
              * Upload file tuy bien
              * @author : Trung Tong
              */
-            if($_FILES['userfile']['name']) {
+            if ($_FILES['userfile']['name']) {
                 $handle = new upload($_FILES['userfile']);
                 if ($handle->uploaded) {
-
 
                     $filename = date('YmdHis') . md5(rand(10000, 99999));
                     $handle->file_new_name_body = $filename;
@@ -198,12 +203,13 @@ class TintucsController extends AppController {
     /**
      * Copy san pham
      */
-    function copy($id = null) {
+    public function copy($id = null)
+    {
         if (!empty($this->data)) {
             $this->Tintuc->create();
             $data['Tintuc'] = $this->data['Tintuc'];
 
-          $img=isset($_POST['userfile'])?$_POST['userfile']:'';
+            $img = isset($_POST['userfile']) ? $_POST['userfile'] : '';
             $data['Tintuc']['images'] = $img;
             if ($this->Tintuc->save($data['Tintuc'])) {
                 if ($this->Session->check('pagenew')) {
@@ -228,23 +234,26 @@ class TintucsController extends AppController {
     }
 
     //close bai viet
-    function close($id = null) {
+    public function close($id = null)
+    {
         $this->Tintuc->id = $id;
         $this->Tintuc->saveField('status', 0);
         $this->redirect($this->Session->read('urlnew'));
     }
 
     // active bai viet
-    function active($id = null) {
+    public function active($id = null)
+    {
         $this->Tintuc->id = $id;
         $this->Tintuc->saveField('status', 1);
         $this->redirect($this->Session->read('urlnew'));
     }
-    
+
     /**
      * Tim kiem bai viet
      */
-    function search() {
+    public function search()
+    {
 
         if ($this->request->is('post')) {
 
@@ -253,8 +262,6 @@ class TintucsController extends AppController {
             $listCat = $_REQUEST['listCat'];
 
             $this->Session->write('catId', $listCat);
-
-
 
             // Get keyword
 
@@ -270,8 +277,6 @@ class TintucsController extends AppController {
 
         }
 
-
-
         // setup condition to search
 
         $condition = array();
@@ -280,33 +285,27 @@ class TintucsController extends AppController {
 
             $condition[] = array(
 
-                'Tintuc.name LIKE' => '%' . $keyword . '%'
+                'Tintuc.name LIKE' => '%' . $keyword . '%',
 
             );
 
         }
-
-
 
         if ($listCat > 0) {
 
             $condition[] = array(
 
-                'Tintuc.cat_id' => $listCat
+                'Tintuc.cat_id' => $listCat,
 
             );
 
         }
-
-
 
         // Lưu đường dẫn để quay lại nếu update, edit, dellete
 
         $urlTmp = DOMAINAD . $this->request->url;
 
         $this->Session->write('pagenew', $urlTmp);
-
-
 
         // Sau khi lay het dieu kien sap xep vao 1 array
 
@@ -321,8 +320,6 @@ class TintucsController extends AppController {
             }
 
         }
-
-
 
         // Tang so thu tu * limit (example : 10)
 
@@ -342,8 +339,6 @@ class TintucsController extends AppController {
 
         $this->set('startPage', $startPage);
 
-
-
         // Simple to call data
 
         $this->paginate = array(
@@ -352,15 +347,13 @@ class TintucsController extends AppController {
 
             'order' => 'Tintuc.pos DESC',
 
-            'limit' => '10'
+            'limit' => '10',
 
         );
 
         $product = $this->paginate('Tintuc');
 
         $this->set('product', $product);
-
-
 
         // Load model
 
@@ -373,7 +366,8 @@ class TintucsController extends AppController {
     }
 
     // sua tin da dang
-    function edit($id = null) {
+    public function edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Không tồn tại ', true));
             if ($this->Session->check('pagenew')) {
@@ -417,8 +411,8 @@ class TintucsController extends AppController {
         $this->loadModel("Danhmuc");
         $list_cat = $this->Danhmuc->generateTreeList(null, null, null, '-- ');
         $this->set(compact('list_cat'));
-        
-       // Edit tieng viet
+
+        // Edit tieng viet
         $this->Tintuc->setLanguage('vie');
         $edit_vie = $this->Tintuc->findById($id);
         $this->set('edit_vie', $edit_vie);
@@ -427,13 +421,14 @@ class TintucsController extends AppController {
         $this->Tintuc->setLanguage('eng');
         $edit_eng = $this->Tintuc->findById($id);
         $this->set('edit_eng', $edit_eng);
-		// Edit tieng Trung
+        // Edit tieng Trung
         $this->Tintuc->setLanguage('chi');
         $edit_chi = $this->Tintuc->findById($id);
         $this->set('edit_chi', $edit_chi);
     }
     // Xoa cac dang
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (empty($id)) {
             $this->Session->setFlash(__('Không tồn tại bài viết này', true));
             //$this->redirect(array('action'=>'index'));

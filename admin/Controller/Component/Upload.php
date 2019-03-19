@@ -1,14 +1,16 @@
 <?php
 
-class UploadComponent extends Object {
+class UploadComponent extends Object
+{
 
-    var $controller = true;
-    var $view;
-    var $components = array('Session', 'Upload', 'Email');
-    var $out_enc = 'UTF-8';
-    var $in_enc = 'UTF-8';
+    public $controller = true;
+    public $view;
+    public $components = array('Session', 'Upload', 'Email');
+    public $out_enc = 'UTF-8';
+    public $in_enc = 'UTF-8';
 
-    function send($template, $from, $fromName, $to, $toName, $subject, $data) {
+    public function send($template, $from, $fromName, $to, $toName, $subject, $data)
+    {
 
         $this->Email->smtpAuth = SMTP_AUTH;
         $this->Email->smtpUserName = SMTP_AUTH_USERNAME;
@@ -26,8 +28,6 @@ class UploadComponent extends Object {
         $this->Email->toName = $toName;
         $this->Email->subject = $subject;
 
-
-
         //$this->Email->attach($fully_qualified_filename, optionally $new_name_when_attached);
         // You can attach as many files as you like.
         //var_dump();
@@ -36,14 +36,15 @@ class UploadComponent extends Object {
         return $result;
     }
 
-    function imageFileCheck($modelName, $fieldName) {
+    public function imageFileCheck($modelName, $fieldName)
+    {
         //Begin Upload file check =============================
         $correctExtension = array("jpg", "gif", "png", "swf");
         $bUpload = false;
         $file = &$this->controller->data[$modelName][$fieldName];
 
         if (isset($file) && (!empty($file)) && ($file['name'] != "")) {
-            $bUpload = TRUE;
+            $bUpload = true;
             $name = $file['name'];
 
             //++ Image upload====================================================
@@ -54,11 +55,11 @@ class UploadComponent extends Object {
 
                 //Check file size
                 if ($handle->file_src_size > $handle->file_max_size) {
-                    $bUpload = FALSE;
+                    $bUpload = false;
                 } else {
                     //Check file extension
                     if (!in_array(strtolower($handle->file_src_name_ext), $correctExtension)) {
-                        $bUpload = FALSE;
+                        $bUpload = false;
                     }
                 }
             }
@@ -66,7 +67,8 @@ class UploadComponent extends Object {
         return $bUpload;
     }
 
-    function imageUpload($modelName, $fieldName, $resize = false, $x = 0, $y = 0) {
+    public function imageUpload($modelName, $fieldName, $resize = false, $x = 0, $y = 0)
+    {
         $bUploaded = $this->imageFileCheck($modelName, $fieldName);
         $nameoutput = '';
         $file = &$this->controller->data[$modelName][$fieldName];
@@ -75,13 +77,12 @@ class UploadComponent extends Object {
             //++ Image upload====================================================
             if (isset($file) && $file['name'] != "") {
 
-
                 $this->Upload->upload($file);
                 $handle = $this->Upload;
 
                 if ($handle->uploaded) {
                     $handle->image_resize = $resize;
-                    ;
+
                     $handle->image_ratio_y = $y;
                     $handle->image_x = $x;
                     $handle->file_overwrite = true;
@@ -93,31 +94,30 @@ class UploadComponent extends Object {
                     //[yyyyMMdd]_[contractors_id]_[pict_m]
                     $filename = mktime() . "_" . $sessionUser[USER_ID] . "_" . $fieldName;
 
-
                     $handle->file_new_name_body = $filename;
                     $handle->Process(PB_APP_IMG_PATH . "/");
 
                     if (!$handle->processed) {
 
-                        $bUploaded = FALSE;
+                        $bUploaded = false;
                     } else {
 
                         $nameoutput = $handle->file_dst_name;
                     }
                 } else {
 
-                    $bUploaded = FALSE;
+                    $bUploaded = false;
                 }
             }
 
             //-- Image upload====================================================
         }
 
-
         return $nameoutput;
     }
 
-    function fileUpload($model, $field, $outputPath, $filename) {
+    public function fileUpload($model, $field, $outputPath, $filename)
+    {
         $nameoutput = '';
         $file = &$this->controller->data[$model][$field];
 
@@ -136,12 +136,12 @@ class UploadComponent extends Object {
                 $handle->Process($outputPath . "/");
 
                 if (!$handle->processed) {
-                    $bUploaded = FALSE;
+                    $bUploaded = false;
                 } else {
                     $nameoutput = $outputPath . "/" . $handle->file_dst_name;
                 }
             } else {
-                $bUploaded = FALSE;
+                $bUploaded = false;
             }
         }
         //-- File upload====================================================
@@ -149,7 +149,8 @@ class UploadComponent extends Object {
         return $nameoutput;
     }
 
-    function uploadFile($modelName, $fieldName) {
+    public function uploadFile($modelName, $fieldName)
+    {
         $bUploaded = $this->imageFileCheck($modelName, $fieldName);
         $nameoutput = '';
         $file = &$this->controller->data[$modelName][$fieldName];
@@ -161,12 +162,12 @@ class UploadComponent extends Object {
                 if ($handle->uploaded) {
                     $handle->Process(PB_APP_FILE_PATH . "/");
                     if (!$handle->processed) {
-                        $bUploaded = FALSE;
+                        $bUploaded = false;
                     } else {
                         $nameoutput = $handle->file_dst_name;
                     }
                 } else {
-                    $bUploaded = FALSE;
+                    $bUploaded = false;
                 }
             }
         }
@@ -174,5 +175,3 @@ class UploadComponent extends Object {
     }
 
 }
-
-?>

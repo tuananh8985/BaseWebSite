@@ -1,6 +1,7 @@
 <?php
 
-class SluggableBehavior extends ModelBehavior {
+class SluggableBehavior extends ModelBehavior
+{
 
     /**
      * Contain settings indexed by model name.
@@ -9,7 +10,8 @@ class SluggableBehavior extends ModelBehavior {
      */
     private $__settings = array();
 
-    public function setup(Model $Model, $settings = array()) {
+    public function setup(Model $Model, $settings = array())
+    {
         $default = array('label' => array('title'), 'slug' => 'slug', 'separator' => '-', 'length' => 200, 'overwrite' => true, 'translation' => null);
 
         if (!isset($this->__settings[$Model->alias])) {
@@ -25,7 +27,8 @@ class SluggableBehavior extends ModelBehavior {
      * @param Model $Model Model about to be saved.
      * @return boolean true if save should proceed, false otherwise
      */
-    public function beforeSave(Model $Model) {
+    public function beforeSave(Model $Model)
+    {
         $return = parent::beforeSave($Model);
 
         if (!is_array($this->__settings[$Model->alias]['label'])) {
@@ -54,7 +57,7 @@ class SluggableBehavior extends ModelBehavior {
                 if (!empty($Model->id)) {
                     $conditions['not'] = array(
                         $Model->alias . '.' . $Model->primaryKey =>
-                        $Model->id
+                        $Model->id,
                     );
                 }
 
@@ -97,7 +100,8 @@ class SluggableBehavior extends ModelBehavior {
      * @param array $settings Settings to use (looks for 'separator' and 'length')
      * @return string Slug for given string
      */
-    private function __slug($string, $settings) {
+    private function __slug($string, $settings)
+    {
         $string = Inflector::slug($string, $settings['separator']);
 
         if (strlen($string) > $settings['length']) {

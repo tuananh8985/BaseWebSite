@@ -3,40 +3,43 @@
 
 How to modify:
 When you create a FileUploader Object, specify it which file types are allowed, maximum file size upload and upload directory like this:
-	$fileUploader = new FileUploader('jpg, jpeg, gif, png, zip, rar', 3, 'upload/');
+$fileUploader = new FileUploader('jpg, jpeg, gif, png, zip, rar', 3, 'upload/');
 File types are and seperated by commas (,), default are 'jpg, jpeg, gif, png, zip, rar'
 Maximum file size upload is in MB, default is: 3 MB
 Upload directory is ended with trailing slash (/), default is: 'upload/'
 
 If one or more of these arguments is missed, default value is used in stead of. You can leave if blank if you don't know how to change.
-*/
-class FileUploader {
-	private $fileTypesAllowed;
-	private $fileSizeMax;
-	private $uploadDir;
-	private $files;
-	
-	/*
-	Function: Create FileUploader object
-	Arguments:
-		$fileTypesAllowed: types of files allowed, separated by commas(,)
-		$fileSizeMax: max size of file upload in MB
-		$uploadDir: path to directory where files go to, ended with trailing slash (/)
-			function __construct($fileTypesAllowed = 'jpg, jpeg, gif, png, zip, rar, mpg, avi, flv, wmv',
-	*/
+ */
+class FileUploader
+{
+    private $fileTypesAllowed;
+    private $fileSizeMax;
+    private $uploadDir;
+    private $files;
 
- // script để thực hiện quá trình upload
-	
-	function __construct($fileTypesAllowed = 'avi, flv, wmv, mp4, mp3', $fileSizeMax = 40, $uploadDir = 'video/upload/') {
-		$this->fileTypesAllowed = strtolower($fileTypesAllowed);
-		$this->fileSizeMax = $fileSizeMax;
-		$this->uploadDir = $uploadDir;
-	}
-	/*
-	Function: Show form upload
-	*/
-	function showFormUpload() {
-		echo '
+    /*
+    Function: Create FileUploader object
+    Arguments:
+    $fileTypesAllowed: types of files allowed, separated by commas(,)
+    $fileSizeMax: max size of file upload in MB
+    $uploadDir: path to directory where files go to, ended with trailing slash (/)
+    function __construct($fileTypesAllowed = 'jpg, jpeg, gif, png, zip, rar, mpg, avi, flv, wmv',
+     */
+
+    // script để thực hiện quá trình upload
+
+    public function __construct($fileTypesAllowed = 'avi, flv, wmv, mp4, mp3', $fileSizeMax = 40, $uploadDir = 'video/upload/')
+    {
+        $this->fileTypesAllowed = strtolower($fileTypesAllowed);
+        $this->fileSizeMax = $fileSizeMax;
+        $this->uploadDir = $uploadDir;
+    }
+    /*
+    Function: Show form upload
+     */
+    public function showFormUpload()
+    {
+        echo '
 		<script type="text/javascript">
 			function addFile() {
 				var br = document.createElement("br")
@@ -50,108 +53,114 @@ class FileUploader {
 				document.getElementById("wait").innerHTML = "Please wait while uploading...";
 			}
 		</script>
-		<form action="'.htmlentities($_SERVER['PHP_SELF']).'" method="post" enctype="multipart/form-data" onsubmit="wait()">
-			<input type="hidden" name="MAX_FILE_SIZE" value="'.($this->fileSizeMax * 1024 * 1024).'">
+		<form action="' . htmlentities($_SERVER['PHP_SELF']) . '" method="post" enctype="multipart/form-data" onsubmit="wait()">
+			<input type="hidden" name="MAX_FILE_SIZE" value="' . ($this->fileSizeMax * 1024 * 1024) . '">
 			<table cellspacing="0" cellpadding="5" style=" margin:10px auto;">
-				<tr><td>Dung lương tối đa</td><td><b>'.$this->fileSizeMax.' MB</b></td></tr>
-				<tr><td>Kiểu file</td><td><b>'.$this->fileTypesAllowed.'</b></td></tr>
+				<tr><td>Dung lương tối đa</td><td><b>' . $this->fileSizeMax . ' MB</b></td></tr>
+				<tr><td>Kiểu file</td><td><b>' . $this->fileTypesAllowed . '</b></td></tr>
 				<tr><td>Chọn file upload<br><!--<a href="javascript:void(0)" onclick="addFile()">Add more files</a>--></td><td id="list"><input name="filesUpload[]" type="file"></td></tr>
 			</table>
 			<input type="submit" name="submit" value="Up ảnh">
 		</form>
 		<div id="wait"></div>
-		
+
 		';
-	}
-	/*
-	Function: Get file upload and set file name and file type
-	*/
-	function getFilesUpload($files) {
-		$j = 0;
-		$this->files = array();
-		for ($i = 0; $i < count($files['name']); $i++) {
-			if (trim($files['name'][$i]) != '') {
-				$this->files[$j]['name'] = trim($files['name'][$i]);
-				$this->files[$j]['tmp_name'] = $files['tmp_name'][$i];
-				$this->files[$j]['error'] = $files['error'][$i];
-				$this->files[$j]['type'] = $files['type'][$i];
-				$this->files[$j]['ext'] = strtolower(substr($this->files[$j]['name'], strrpos($this->files[$j]['name'], '.') + 1));
-				$this->files[$j]['newName'] = $this->uploadDir.md5_file($this->files[$j]['tmp_name']).'.'.$this->files[$j]['ext'];
-				$j++;
-			}
-		}
-	}
-	/*
-	Function: Get total files upload
-	*/
-	function getTotalFiles() {
-		return count($this->files);
-	}
-	/*
-	Function: Check error while uploading
-	*/
-	function checkUploadProcess($i) {
-		switch ($this->files[$i]['error']) {
-			case UPLOAD_ERR_INI_SIZE:
-			case UPLOAD_ERR_FORM_SIZE:
-				echo '<div id="error">File <u>'.$this->files[$i]['name'].'</u> Lớn quá hãy chọn lại file khác</div>';
-				return false;
-			case UPLOAD_ERR_PARTIAL:
-				echo '<div id="error">Lỗi khi tải file <u>'.$this->files[$i]['name'].'</u> , Xin hãy tải lại</div>';
-				return false;
-		}
-		return true;
-	}
-	/*
-	Function: Check file type
-	*/
-	function checkFileType($i) {
-		if (strpos($this->fileTypesAllowed, $this->files[$i]['ext']) === false) {
-	//	echo $this->fileTypesAllowed;
-			echo '<div id="error">Định dạng không đúng <u>'.$this->files[$i]['name'].'</u> Hãy chọn lại</div>';
-			return false;
-		}
+    }
+    /*
+    Function: Get file upload and set file name and file type
+     */
+    public function getFilesUpload($files)
+    {
+        $j = 0;
+        $this->files = array();
+        for ($i = 0; $i < count($files['name']); $i++) {
+            if (trim($files['name'][$i]) != '') {
+                $this->files[$j]['name'] = trim($files['name'][$i]);
+                $this->files[$j]['tmp_name'] = $files['tmp_name'][$i];
+                $this->files[$j]['error'] = $files['error'][$i];
+                $this->files[$j]['type'] = $files['type'][$i];
+                $this->files[$j]['ext'] = strtolower(substr($this->files[$j]['name'], strrpos($this->files[$j]['name'], '.') + 1));
+                $this->files[$j]['newName'] = $this->uploadDir . md5_file($this->files[$j]['tmp_name']) . '.' . $this->files[$j]['ext'];
+                $j++;
+            }
+        }
+    }
+    /*
+    Function: Get total files upload
+     */
+    public function getTotalFiles()
+    {
+        return count($this->files);
+    }
+    /*
+    Function: Check error while uploading
+     */
+    public function checkUploadProcess($i)
+    {
+        switch ($this->files[$i]['error']) {
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                echo '<div id="error">File <u>' . $this->files[$i]['name'] . '</u> Lớn quá hãy chọn lại file khác</div>';
+                return false;
+            case UPLOAD_ERR_PARTIAL:
+                echo '<div id="error">Lỗi khi tải file <u>' . $this->files[$i]['name'] . '</u> , Xin hãy tải lại</div>';
+                return false;
+        }
+        return true;
+    }
+    /*
+    Function: Check file type
+     */
+    public function checkFileType($i)
+    {
+        if (strpos($this->fileTypesAllowed, $this->files[$i]['ext']) === false) {
+            //    echo $this->fileTypesAllowed;
+            echo '<div id="error">Định dạng không đúng <u>' . $this->files[$i]['name'] . '</u> Hãy chọn lại</div>';
+            return false;
+        }
 
-		return true;
-	}
-	/*
-	Function: Move file to destination folder
-	*/
-	function moveFile($i) {
-		if (!@file_exists($this->files[$i]['newName'])) {
-			if (!@move_uploaded_file($this->files[$i]['tmp_name'], $this->files[$i]['newName'])) {
-				echo '<div id="error">Không thể up file <u>'.$this->files[$i]['name'].'</u> Lên server,Làm lại</div>';
-				return false;
-			} else {
-				echo '<div id="successful">File <u>'.$this->files[$i]['name'].'</u> Hoàn Thành </div>';
-			}
-		} else {
-			echo '<div id="warn">File <u>'.$this->files[$i]['name'].'</u> already exists</div>';
-		}
-		return true;
-	}
-	/*
-	Function: Return link to uploaded file
-	*/
-	function getLink($i) {
-		$path = dirname($_SERVER['PHP_SELF']);
-		if ($path == '' || $path == '/' || $path == '\\') {
-			$path = '';
-		}
+        return true;
+    }
+    /*
+    Function: Move file to destination folder
+     */
+    public function moveFile($i)
+    {
+        if (!@file_exists($this->files[$i]['newName'])) {
+            if (!@move_uploaded_file($this->files[$i]['tmp_name'], $this->files[$i]['newName'])) {
+                echo '<div id="error">Không thể up file <u>' . $this->files[$i]['name'] . '</u> Lên server,Làm lại</div>';
+                return false;
+            } else {
+                echo '<div id="successful">File <u>' . $this->files[$i]['name'] . '</u> Hoàn Thành </div>';
+            }
+        } else {
+            echo '<div id="warn">File <u>' . $this->files[$i]['name'] . '</u> already exists</div>';
+        }
+        return true;
+    }
+    /*
+    Function: Return link to uploaded file
+     */
+    public function getLink($i)
+    {
+        $path = dirname($_SERVER['PHP_SELF']);
+        if ($path == '' || $path == '/' || $path == '\\') {
+            $path = '';
+        }
 
-		$link = 'http://'.$_SERVER['SERVER_NAME'].$path.'/'.$this->files[$i]['newName'];
-		$link_bs = $this->files[$i]['newName'];
-		$link_bs = str_replace("../","",$link_bs);
-		$return = "<table><tr><td>Link to file:</td><td><input type=\"text\" onclick=\"this.select()\" value=\"$link\" size=\"50\"></td></tr>";
-		if (strpos($this->files[$i]['type'], 'image') !== false) {
-			$link = '[img]'.$link.'[/img]';
-		} else {
-			$link = '[url='.$link.']Download File[/url]';
-		}
-		$return .= "<tr><td>BBCode:</td><td><input type=\"text\" onclick=\"this.select()\" value=\"$link\" size=\"50\"></td></tr></table>";
-		$return .= "<tr><td colspan=\"2\"><a href=\"javascript:window.opener.document.image.userfile.value='$link_bs';window.close();window.history.go(1);\">close</a></td> </tr></table>";
-		return $return;
-	}
+        $link = 'http://' . $_SERVER['SERVER_NAME'] . $path . '/' . $this->files[$i]['newName'];
+        $link_bs = $this->files[$i]['newName'];
+        $link_bs = str_replace("../", "", $link_bs);
+        $return = "<table><tr><td>Link to file:</td><td><input type=\"text\" onclick=\"this.select()\" value=\"$link\" size=\"50\"></td></tr>";
+        if (strpos($this->files[$i]['type'], 'image') !== false) {
+            $link = '[img]' . $link . '[/img]';
+        } else {
+            $link = '[url=' . $link . ']Download File[/url]';
+        }
+        $return .= "<tr><td>BBCode:</td><td><input type=\"text\" onclick=\"this.select()\" value=\"$link\" size=\"50\"></td></tr></table>";
+        $return .= "<tr><td colspan=\"2\"><a href=\"javascript:window.opener.document.image.userfile.value='$link_bs';window.close();window.history.go(1);\">close</a></td> </tr></table>";
+        return $return;
+    }
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -198,29 +207,29 @@ class FileUploader {
 	</style>
 </head>
 <body>
- 
+
 	<div id="page">
 		<center>Up ảnh</center>
 		<?php
-		$fileUploader = new FileUploader();
-		ini_set('post_max_size','100M');
-		ini_set('upload_max_filesize','100M');
- 		ini_set('max_execution_time','1000');
-		ini_set('max_input_time','1000');
-		$fileUploader->showFormUpload();
-		if (isset($_POST['submit'])) {
-			$fileUploader->getFilesUpload($_FILES['filesUpload']);
-			if ($fileUploader->getTotalFiles() > 0) {
-				for ($i = 0; $i < $fileUploader->getTotalFiles(); $i++) {
-					if ($fileUploader->checkUploadProcess($i) && $fileUploader->checkFileType($i) && $fileUploader->moveFile($i)) {
-						echo $fileUploader->getLink($i);
-					}
-				}
-			} else {
-				echo '<div id="error">Please choose at least one file before upload</div>';
-			}
-		}
-		?>
+$fileUploader = new FileUploader();
+ini_set('post_max_size', '100M');
+ini_set('upload_max_filesize', '100M');
+ini_set('max_execution_time', '1000');
+ini_set('max_input_time', '1000');
+$fileUploader->showFormUpload();
+if (isset($_POST['submit'])) {
+    $fileUploader->getFilesUpload($_FILES['filesUpload']);
+    if ($fileUploader->getTotalFiles() > 0) {
+        for ($i = 0; $i < $fileUploader->getTotalFiles(); $i++) {
+            if ($fileUploader->checkUploadProcess($i) && $fileUploader->checkFileType($i) && $fileUploader->moveFile($i)) {
+                echo $fileUploader->getLink($i);
+            }
+        }
+    } else {
+        echo '<div id="error">Please choose at least one file before upload</div>';
+    }
+}
+?>
 		<!--<div id="copyright">Copyright &copy; 2008 <a href="http://halo.com.vn" title="Visit website">Halo</a>.</div> -->
 	</div>
 </body>

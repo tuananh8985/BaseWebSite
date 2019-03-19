@@ -1,25 +1,26 @@
 <?php
 
-class Catalogue extends AppModel {
+class Catalogue extends AppModel
+{
 
-    var $name = 'Catalogue';
-    var $displayField = 'name';
-    var $actsAs = array('Tree', 'Translate' => array('name'), 'Sluggable' => array('label' => 'name'));
-    var $belongsTo = array(
+    public $name = 'Catalogue';
+    public $displayField = 'name';
+    public $actsAs = array('Tree', 'Translate' => array('name'), 'Sluggable' => array('label' => 'name'));
+    public $belongsTo = array(
         'ParentCat' => array(
             'className' => 'Catalogue',
-            'foreignKey' => 'parent_id'
-        )
+            'foreignKey' => 'parent_id',
+        ),
     );
-    var $validate = array(
+    public $validate = array(
         'id' => array(
             'notempty' => array(
                 'rule' => array('notempty'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                //'message' => 'Your custom message here',
+                //'allowEmpty' => false,
+                //'required' => false,
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'name' => array(
@@ -28,14 +29,13 @@ class Catalogue extends AppModel {
                 'message' => 'Xin vui lòng điền thông tin',
                 'allowEmpty' => false,
                 'required' => true,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
     );
-    var $hasMany = array(
-        'News' =>
-        array('className' => 'News',
+    public $hasMany = array(
+        'News' => array('className' => 'News',
             'conditions' => array('News.status' => 1),
             'order' => '',
             'limit' => '',
@@ -45,10 +45,8 @@ class Catalogue extends AppModel {
             'finderQuery' => '',
             'fields' => '',
             'offset' => '',
-            'counterQuery' => ''
-        )
+            'counterQuery' => '',
+        ),
     );
 
 }
-
-?>
