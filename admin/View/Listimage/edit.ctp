@@ -59,9 +59,9 @@
                     <td><select name="listCat" id="jumpMenu">
                             <option value="">--- Danh mục cha ---</option>
                         <?php foreach ($list_cat as $k => $v) { 
-                            if($edit['Listimage']['id'] != $k) {
+                            if($edit_vie['Listimage']['id'] != $k) {
                         ?>
-                        <option value="<?php echo $k; ?>" <?php if($edit['Listimage']['parent_id'] == $k) {echo 'selected="selected"';} ?>><?php echo $v; ?></option>
+                        <option value="<?php echo $k; ?>" <?php if($edit_vie['Listimage']['parent_id'] == $k) {echo 'selected="selected"';} ?>><?php echo $v; ?></option>
                         <?php }} ?>
                     </select></td>
                 </tr>
