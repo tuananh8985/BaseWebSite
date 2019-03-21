@@ -154,7 +154,6 @@ class PostsController extends AppController
      */
     public function edit($id = null)
     {
-
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Không tồn tại ', true));
             if ($this->Session->check('pagenew')) {
@@ -215,6 +214,7 @@ class PostsController extends AppController
         $this->Post->setLanguage('chi');
         $edit_chi = $this->Post->findById($id);
         $this->set('edit_chi', $edit_chi);
+
     }
     // Xoa cac dang
     public function delete($id = null)

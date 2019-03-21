@@ -1,6 +1,12 @@
 <?php
 class HomeController extends AppController
 {
+    public function beforeFilter()
+    {
+        parent::beforeFilter();
+        // $this->layout = 'frontend';
+    }
+
     public $uses = array(
         'Product', 'News', 'Post',
     );

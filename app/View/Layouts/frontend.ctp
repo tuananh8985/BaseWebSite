@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!-- Mirrored from demo3.skyvietnam.vn/nhakhoahoanmy/lien-he by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 18 Mar 2019 06:17:22 GMT -->
+    <!-- Added by HTTrack -->
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <!-- /Added by HTTrack -->
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -7,12 +11,12 @@
         <meta name="revisit-after" content="1 days">
         <meta name="robots" content="noodp,index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link rel="icon" href="upload/images/logo(1).png" type="image/x-icon"/>
+        <link rel="icon" href="<?php echo DOMAIN ?>resources/upload/images/logo(1).png" type="image/x-icon"/>
         <title>NHAKHOAHOANMY</title>
         <meta name="description" content="ss"/>
         <meta name="keywords" content="ss"/>
         <!-- Bootstrap core CSS -->
-        <base href="http://demo3.skyvietnam.vn/nhakhoahoanmy/">
+        <base >
         <link href="<?php echo DOMAIN ?>resources/skin/frontend/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="<?php echo DOMAIN ?>resources/skin/frontend/css/owl.carousel.css" rel="stylesheet"/>
         <link href="<?php echo DOMAIN ?>resources/skin/frontend/css/owl.theme.css" rel="stylesheet"/>
@@ -33,7 +37,7 @@
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.8&appId=160758074284044";
+            js.src = "../../connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.8&appId=160758074284044";
             fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         </script>
@@ -41,64 +45,36 @@
     <body>
         <?php echo $this->element('top_header') ?>
         <div class="main-header">
-            <?php echo $this->element('menu') ?>
-            <?php echo $this->element('slideshow') ?>
+            <?php echo $this->element('frontend/menu') ?>
+            <?php echo $this->element('frontend/banner') ?>
         </div>
-        <div class="list_cate_home" style="display: none">
-            <div class="container">
-                <div class="row">
+
+        <div class="container">
+            <div class="drection">
+                <div class="link">
+                    <span><a href="index.html">Trang chủ</a></span>
+                    <span class="divider"></span>
+                    <span class="active">Liên hệ</span>
                 </div>
             </div>
         </div>
         <div class="body-wap">
-            <?php echo $this->element('home/tin_noi_bat') ?>
-            <?php echo $this->element('home/tin_tieu_bieu') ?>
-            <div class="box_cus">
+            <section class="body-content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <?php echo $this->element('home/trai_nghiem') ?>
+                        <div class="col-sm-3">
+                            <?php echo $this->element('frontend/sidebar_dichvu') ?>
+                            <?php echo $this->element('frontend/sidebar_tintuc') ?>
                         </div>
-                        <div class="col-sm-6">
-                            <?php echo $this->element('home/dang_ky_tu_van') ?>
+                        <div class="col-sm-9">
+                            <?php echo $this->element('frontend/main-content') ?>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <?php echo $this->element('home/dich_vu_khac') ?>
-
         </div>
-        <?php echo $this->element('home/doi_tac') ?>
+        </section>
         </div>
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                jQuery(".widget-tabproduct-2-template:not(:first)").hide(); // Ẩn toàn bộ nội dung của tab
-                jQuery("#uynh-widget-tabproduct-2-template ul li:first").addClass("active")
-                jQuery(".widget-tabproduct-2-template:first").find(".list_product_item").addClass('list_product_item_slide');
-                jQuery("#uynh-widget-tabproduct-2-template ul li ").click(function () { //Khai báo sự kiện khi click vào một tab nào đó
-                    var activeTab = jQuery(this).children('a').attr("alt");
-                    jQuery("#uynh-widget-tabproduct-2-template ul li ").removeClass("active");
-                    jQuery(".widget-tabproduct-2-template").removeClass('list_product_item_slide');
-                    jQuery(activeTab).find(".list_product_item").addClass('list_product_item_slide');
-                    jQuery(this).addClass("active");
-                    jQuery(".widget-tabproduct-2-template").hide(200);
-                    jQuery(activeTab).stop().show(200);
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function () {
-                jQuery('.scrollbar-light').scrollbar();
-            })
-        </script>
-        <?php echo $this->element('home/footer') ?>
-
-        <div class="copy_right">
-            <div class="container">
-                Copyright © 2017 skyvietnam.com.vn
-            </div>
-        </div>
+        <?php echo $this->element('frontend/footer') ?>
         <!--Included Plugins Javascript-->
         <script src="<?php echo DOMAIN ?>resources/skin/frontend/js/wow.min.js"></script>
         <a href="#0" class="cd-top">Top</a>
@@ -133,4 +109,5 @@
             });
         </script>
     </body>
+    <!-- Mirrored from demo3.skyvietnam.vn/nhakhoahoanmy/lien-he by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 18 Mar 2019 06:17:22 GMT -->
 </html>
